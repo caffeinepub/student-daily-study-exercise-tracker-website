@@ -1,0 +1,229 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Student daily study & exercise tracker website (frontend)",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Add Internet Identity sign-in/out, profile setup, and an authenticated student workspace shell that gates all personal data UI.",
+      "acceptanceCriteria": [
+        "User can sign in and sign out with Internet Identity.",
+        "After signing in, the app shows a personalized dashboard (not a generic landing screen).",
+        "All read/write operations in the backend are scoped to the authenticated principal."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the app shell that uses the immutable useInternetIdentity/useActor hooks to gate all study/exercise screens behind authentication; wire navigation between Dashboard, History, and (optional) Insights within the authenticated workspace; show a non-authenticated sign-in screen otherwise. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/LoginButton.tsx",
+          "operation": "create",
+          "description": "Create a login/logout button component using useInternetIdentity and clear React Query cache on logout (queryClient.clear) to prevent data leakage between principals; handle 'already authenticated' error recovery per the authorization component guidance. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useCurrentUserProfile.ts",
+          "operation": "create",
+          "description": "Add a React Query hook to load getCallerUserProfile via useActor, with loading state shaped to avoid profile-setup flash (enabled when actor is available; retry false). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/ProfileSetupDialog.tsx",
+          "operation": "create",
+          "description": "Create a first-login profile setup dialog that prompts for a display name and calls saveCallerUserProfile; only show it when authenticated and getCallerUserProfile returns null; use shadcn-ui dialog/form primitives by composition (do not edit frontend/src/components/ui). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/layout/AppHeader.tsx",
+          "operation": "create",
+          "description": "Create a header that displays the app logo and the signed-in student's profile name (not principal id), plus the LoginButton and navigation controls for Dashboard/History/Insights. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/AccessDeniedScreen.tsx",
+          "operation": "create",
+          "description": "Add a simple access denied / auth-required screen used when the user is not authenticated (or when backend calls return authorization traps), with a clear call to action to sign in. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Build the dashboard UI for today’s Study and Exercise lists with add/edit/delete and completion toggles, persisting changes through the backend actor.",
+      "acceptanceCriteria": [
+        "Dashboard displays two sections: Study and Exercise, each listing today’s items with completion state.",
+        "User can add a new study item and a new exercise item from the dashboard.",
+        "User can edit and delete items from the dashboard.",
+        "User can toggle an item as complete/incomplete and sees the UI update immediately."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useDayLogs.ts",
+          "operation": "create",
+          "description": "Create React Query hooks for loading the signed-in user's day logs (getAllDayLogs) and for saving today's log (saveDayLog) via useActor, including optimistic UI updates and query invalidation on success/failure. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/utils/dates.ts",
+          "operation": "create",
+          "description": "Add date utilities to derive a stable 'day key' for today and for existing logs (e.g., normalize to local day boundaries) so the dashboard can reliably pick today's log from getAllDayLogs. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "create",
+          "description": "Implement the personalized dashboard page showing two sections (Study, Exercise) for today's items; load today's state from day logs; render completion states and actions; handle loading/error/empty states. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/daylog/StudySection.tsx",
+          "operation": "create",
+          "description": "Create the Study section UI (list + add/edit form + delete control + completion toggle) using composed shadcn-ui components (cards, buttons, inputs, textarea, dialogs). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/daylog/ExerciseSection.tsx",
+          "operation": "create",
+          "description": "Create the Exercise section UI (list + add/edit form + delete control + completion toggle) using composed shadcn-ui components; include basic details (description, reps) and completion status. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/daylog/ItemEditors.tsx",
+          "operation": "create",
+          "description": "Add shared form components/state helpers for adding/editing items, including validation and cancel/save flows; ensure edits update the dashboard immediately and trigger saveDayLog persistence. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire DashboardPage into the authenticated workspace navigation so it is the default view after sign-in (personalized dashboard). Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Add a history view to browse previous day logs and copy unfinished items into today without creating duplicates when repeating a copy.",
+      "acceptanceCriteria": [
+        "User can navigate to a history view that lists days with existing logs.",
+        "Selecting a day shows that day’s study/exercise items.",
+        "User can copy unfinished items from a selected day into today (no duplicates created when copying the same day twice)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/HistoryPage.tsx",
+          "operation": "create",
+          "description": "Implement the History view: list days with logs (from getAllDayLogs), allow selecting a day, and display that day’s study/exercise items read-only with an action to copy unfinished items into today. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/utils/copyUnfinished.ts",
+          "operation": "create",
+          "description": "Add logic to merge unfinished items from a prior day into today's items with a deterministic de-duplication rule (e.g., by normalized title/description + notes/reps signature) so copying the same day twice does not add duplicates; return a new DailyLogInput for saving. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useDayLogs.ts",
+          "operation": "modify",
+          "description": "Extend day-log hooks to support the copy flow: compute today's current items, apply copyUnfinished merge, then persist via saveDayLog and refresh queries; surface errors in UI. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire HistoryPage into the authenticated workspace navigation and ensure users can navigate from Dashboard to History and back. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Show weekly completion insights (completed vs total for Study/Exercise) and a streak indicator based on consecutive days with at least one completed item.",
+      "acceptanceCriteria": [
+        "Dashboard (or a dedicated Insights page) shows weekly totals for Study and Exercise (completed/total).",
+        "App shows a streak count based on consecutive days with at least one completed item (study or exercise).",
+        "Numbers match backend-calculated results for the authenticated user."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useInsights.ts",
+          "operation": "create",
+          "description": "Create a React Query hook that loads backend-provided completion stats (getDailyLogsByCompletionStats) via useActor and derives UI-ready weekly summaries and streak value from the returned series. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/insights/InsightsPanel.tsx",
+          "operation": "create",
+          "description": "Create an Insights panel UI that displays weekly completed/total counts for Study and Exercise and a streak indicator; design it to be embeddable on the Dashboard and/or as a dedicated view. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "modify",
+          "description": "Embed InsightsPanel on the dashboard (or link to a separate Insights view) so weekly summaries and streak are visible in the authenticated workspace. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "If Insights is implemented as a dedicated view instead of an embedded panel, wire an InsightsPage into navigation; otherwise ensure dashboard layout consistently includes the insights area. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Apply a consistent, accessible visual theme (non-blue/purple primary palette) across navigation, cards, buttons, forms, and typography.",
+      "acceptanceCriteria": [
+        "A single, consistent theme is applied to navigation, cards/sections, buttons, forms, and typography.",
+        "Theme does not rely on blue/purple as the primary palette.",
+        "UI remains accessible with clear contrast for text and interactive elements."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Create global theme styles using the template’s Tailwind + CSS variables approach (e.g., set --primary/--accent/--background tokens) with a warm/earthy palette (not blue/purple) and accessible contrast; ensure consistent base typography/spacing. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Adjust theme extension as needed to support the chosen palette/typography consistently (while keeping the existing CSS-variable color system intact). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/layout/AppHeader.tsx",
+          "operation": "modify",
+          "description": "Apply the theme consistently in the header/navigation using composed shadcn-ui primitives and Tailwind utility classes (no edits under frontend/src/components/ui). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "modify",
+          "description": "Ensure dashboard sections, cards, buttons, and forms follow the theme conventions for spacing, typography, and states (hover/focus/disabled) with accessible contrast. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Add required generated static images under frontend/public/assets/generated and visibly render at least one in the UI; set favicon to the generated asset.",
+      "acceptanceCriteria": [
+        "Generated images are stored at frontend/public/assets/generated with the specified filenames.",
+        "At least one generated image is visibly used in the UI (header/brand area or sign-in screen).",
+        "Images are loaded directly as static assets (not served or transformed by the backend)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/student-mascot.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated static asset file at frontend/public/assets/generated/student-mascot.dim_512x512.png for use in the UI brand/sign-in area."
+        },
+        {
+          "path": "frontend/public/assets/generated/app-logo.dim_256x256.png",
+          "operation": "create",
+          "description": "Add the generated static asset file at frontend/public/assets/generated/app-logo.dim_256x256.png for use in the UI header/brand area."
+        },
+        {
+          "path": "frontend/public/assets/generated/favicon.dim_64x64.png",
+          "operation": "create",
+          "description": "Add the generated static asset file at frontend/public/assets/generated/favicon.dim_64x64.png to use as the site favicon."
+        },
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Register the generated favicon as a static asset by linking to frontend/public/assets/generated/favicon.dim_64x64.png."
+        },
+        {
+          "path": "frontend/src/components/layout/AppHeader.tsx",
+          "operation": "modify",
+          "description": "Render the generated logo asset frontend/public/assets/generated/app-logo.dim_256x256.png in the header brand area (and optionally the mascot frontend/public/assets/generated/student-mascot.dim_512x512.png) to satisfy visible usage. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/AccessDeniedScreen.tsx",
+          "operation": "modify",
+          "description": "Optionally render frontend/public/assets/generated/student-mascot.dim_512x512.png on the sign-in/auth-required screen to reinforce branding while unauthenticated. Verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}

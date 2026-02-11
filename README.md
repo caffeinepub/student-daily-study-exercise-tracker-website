@@ -1,2 +1,3 @@
-# student-daily-study-exercise-tracker-website
-Exported from Caffeine project: Student daily study &amp; exercise tracker website
+## Student daily study &amp; exercise tracker website
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

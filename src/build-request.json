@@ -1,0 +1,148 @@
+{
+  "kind": "build_request",
+  "title": "Student daily study & exercise tracker website",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Create an authenticated student workspace using Internet Identity so each student can securely access only their own study and exercise data.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "I want to build a web site for students for daily to hadle both exercise and study"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can sign in and sign out with Internet Identity.",
+        "After signing in, the app shows a personalized dashboard (not a generic landing screen).",
+        "All read/write operations in the backend are scoped to the authenticated principal."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement backend data models and persistence for daily logs that include study items and exercise items, each with status tracking and basic details.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "I want to build a web site for students for daily to hadle both exercise and study"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend supports CRUD for daily logs keyed by date for the signed-in user.",
+        "Each daily log can store multiple study entries and multiple exercise entries.",
+        "Entries support marking completion (done/undone) and updating/deleting an entry.",
+        "Data persists across page refreshes and canister upgrades within the template’s default persistence approach."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Build the core UI for managing a student’s day: a dashboard showing today’s study and exercise lists, with forms to add/edit items and controls to mark items complete.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "web site for students for daily to hadle both exercise and study"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Dashboard displays two sections: Study and Exercise, each listing today’s items with completion state.",
+        "User can add a new study item and a new exercise item from the dashboard.",
+        "User can edit and delete items from the dashboard.",
+        "User can toggle an item as complete/incomplete and sees the UI update immediately."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Add a calendar/history view to browse previous days’ logs and quickly copy (duplicate) a prior day’s unfinished items into today.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "daily to hadle both exercise and study"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can navigate to a history view that lists days with existing logs.",
+        "Selecting a day shows that day’s study/exercise items.",
+        "User can copy unfinished items from a selected day into today (no duplicates created when copying the same day twice)."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Add simple progress insights: show weekly completion summaries for study and exercise (e.g., completed vs total items) and a basic streak indicator.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "handle both exercise and study"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Dashboard (or a dedicated Insights page) shows weekly totals for Study and Exercise (completed/total).",
+        "App shows a streak count based on consecutive days with at least one completed item (study or exercise).",
+        "Numbers match backend-calculated results for the authenticated user."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Define and apply a coherent visual theme for the student daily planner UI (colors, typography, spacing, and component styling) and use it consistently across all pages.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A single, consistent theme is applied to navigation, cards/sections, buttons, forms, and typography.",
+        "Theme does not rely on blue/purple as the primary palette.",
+        "UI remains accessible with clear contrast for text and interactive elements."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Add generated static image assets to the frontend and render them in the UI (e.g., in the app header/landing area) from frontend/public/assets/generated.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Generated images are stored at frontend/public/assets/generated with the specified filenames.",
+        "At least one generated image is visibly used in the UI (header/brand area or sign-in screen).",
+        "Images are loaded directly as static assets (not served or transformed by the backend)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor (all logic in backend/main.mo).",
+    "Do not edit files under frontend/src/components/ui; compose them instead.",
+    "Do not edit immutable hook files (frontend/src/hooks/useInternetIdentity.ts, useInternetIdentity.tsx, useActor.ts) or frontend/src/main.tsx; integrate via new components/hooks as needed."
+  ],
+  "nonGoals": [
+    "Real-time collaboration between multiple students.",
+    "Messaging/chat features.",
+    "Integration with external calendars, maps, social media APIs, or third-party auth providers beyond Internet Identity.",
+    "Push notifications, email, or SMS reminders."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Friendly study-and-fitness mascot illustration, flat style, warm colors (student-mascot.dim_512x512.png)",
+      "Minimal app logo mark combining a book and dumbbell icon, flat monochrome (app-logo.dim_256x256.png)",
+      "Simple favicon version of the logo mark (favicon.dim_64x64.png)"
+    ],
+    "edits": []
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-11T14:13:34.370Z",
+  "summary": "The diff adds a new Motoko backend actor with authorization and day-log storage, plus a full frontend app with II-gated routing, dashboard (study/exercise CRUD via saveDayLog), history browsing with copy-unfinished workflow, an insights panel, and a warm (non-blue/purple) theme. However, key parts of the backend persistence/CRUD-by-date and some AC details (weekly stats computed by backend; generated image files presence) are not evidenced in the provided diff summary, and there are some unrequested additions (user profiles/admin access-control initialization).",
+  "missing_requirements": [
+    {
+      "id": "REQ-2",
+      "requirement": "Backend supports CRUD for daily logs keyed by date for the signed-in user.",
+      "reason": "The shown backend function saves logs with `date = Time.now()` and an auto-increment `id`, but there is no evidence of CRUD keyed by a date value (create/read/update/delete by date) in the visible portion of the backend.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "requirement": "Entries support updating/deleting an entry (CRUD) and data persists across canister upgrades within the template’s default persistence approach.",
+      "reason": "The visible backend code shows `saveDayLog` and `getDayLog`, but no evidence of update/delete entry APIs, and no evidence of stable variables or preupgrade/postupgrade hooks for upgrade persistence.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "requirement": "Weekly completion summaries and streak indicator numbers match backend-calculated results for the authenticated user.",
+      "reason": "The frontend `InsightsPanel` appears to compute totals client-side from `getDailyLogsByCompletionStats()` results and explicitly notes stats lack dates, making it impossible to verify “weekly” correctness or that the streak/weekly numbers are backend-calculated as required.",
+      "evidence": [
+        "frontend/src/components/insights/InsightsPanel.tsx",
+        "frontend/src/hooks/useInsights.ts"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "requirement": "Generated images are stored at frontend/public/assets/generated with the specified filenames.",
+      "reason": "UI components reference the images by path, but the diff summary does not show the actual static image files being added under `frontend/public/assets/generated` (omitted files are not evidenced).",
+      "evidence": [
+        "frontend/src/components/auth/AccessDeniedScreen.tsx",
+        "frontend/src/components/layout/AppHeader.tsx"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "requirement": "Copy unfinished items from a selected day into today with no duplicates created when copying the same day twice.",
+      "reason": "History page calls `copyUnfinishedItems(...)`, but the implementation of that utility is not shown in the provided diff summary, so the “no duplicates when copying twice” behavior is not evidenced.",
+      "evidence": [
+        "frontend/src/pages/HistoryPage.tsx"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "User profile management (name capture + profile save/get APIs and a profile setup dialog).",
+      "reason": "The BuildRequest focuses on study/exercise daily logs and authentication; it does not request user profile/name storage or a forced profile setup flow.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/components/auth/ProfileSetupDialog.tsx",
+        "frontend/src/hooks/useCurrentUserProfile.ts",
+        "frontend/src/App.tsx",
+        "frontend/src/components/layout/AppHeader.tsx"
+      ]
+    },
+    {
+      "description": "Admin/access-control initialization via a secret URL parameter (`caffeineAdminToken`) and `_initializeAccessControlWithSecret` call.",
+      "reason": "The BuildRequest does not request an admin token mechanism or secret-based access-control initialization; it only requires II-authenticated per-principal scoping.",
+      "evidence": [
+        "frontend/src/hooks/useActor.ts",
+        "backend/main.mo"
+      ]
+    }
+  ],
+  "confidence": 0.66,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/auth/AccessDeniedScreen.tsx",
+    "frontend/src/components/auth/LoginButton.tsx",
+    "frontend/src/components/auth/ProfileSetupDialog.tsx",
+    "frontend/src/components/daylog/ExerciseItemEditor.tsx",
+    "frontend/src/components/daylog/ExerciseSection.tsx",
+    "frontend/src/components/daylog/StudyItemEditor.tsx",
+    "frontend/src/components/daylog/StudySection.tsx",
+    "frontend/src/components/insights/InsightsPanel.tsx",
+    "frontend/src/components/layout/AppHeader.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useCurrentUserProfile.ts",
+    "frontend/src/hooks/useDayLogs.ts",
+    "frontend/src/hooks/useInsights.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/DashboardPage.tsx",
+    "frontend/src/pages/HistoryPage.tsx",
+    "frontend/src/utils/copyUnfinished.ts",
+    "frontend/src/utils/dates.ts",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

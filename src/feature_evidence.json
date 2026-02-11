@@ -1,0 +1,140 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-create-an-authenticated-student-workspace-using-internet-identity-so-each-student-can-securely-access-only-their-own-study-and-exercise-data",
+      "featureTitle": "Create an authenticated student workspace using Internet Identity so each student can securely access only their own study and exercise data.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/auth/AccessDeniedScreen.tsx",
+        "frontend/src/components/auth/LoginButton.tsx",
+        "frontend/src/components/auth/ProfileSetupDialog.tsx",
+        "frontend/src/components/layout/AppHeader.tsx",
+        "frontend/src/hooks/useCurrentUserProfile.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-the-core-ui-for-managing-a-student-s-day-a-dashboard-showing-today-s-study-and-exercise-lists-with-forms-to-add-edit-items-and-controls-to-mark-items-complete",
+      "featureTitle": "Build the core UI for managing a student’s day: a dashboard showing today’s study and exercise lists, with forms to add/edit items and controls to mark items complete.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/daylog/ExerciseSection.tsx",
+        "frontend/src/components/daylog/StudySection.tsx",
+        "frontend/src/hooks/useDayLogs.ts",
+        "frontend/src/pages/DashboardPage.tsx",
+        "frontend/src/utils/dates.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-calendar-history-view-to-browse-previous-days-logs-and-quickly-copy-duplicate-a-prior-day-s-unfinished-items-into-today",
+      "featureTitle": "Add a calendar/history view to browse previous days’ logs and quickly copy (duplicate) a prior day’s unfinished items into today.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/hooks/useDayLogs.ts",
+        "frontend/src/pages/HistoryPage.tsx",
+        "frontend/src/utils/copyUnfinished.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-simple-progress-insights-show-weekly-completion-summaries-for-study-and-exercise-e-g-completed-vs-total-items-and-a-basic-streak-indicator",
+      "featureTitle": "Add simple progress insights: show weekly completion summaries for study and exercise (e.g., completed vs total items) and a basic streak indicator.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/insights/InsightsPanel.tsx",
+        "frontend/src/hooks/useInsights.ts",
+        "frontend/src/pages/DashboardPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-define-and-apply-a-coherent-visual-theme-for-the-student-daily-planner-ui-colors-typography-spacing-and-component-styling-and-use-it-consistently-across-all-pages",
+      "featureTitle": "Define and apply a coherent visual theme for the student daily planner UI (colors, typography, spacing, and component styling) and use it consistently across all pages.",
+      "files": [
+        "frontend/src/components/layout/AppHeader.tsx",
+        "frontend/src/index.css",
+        "frontend/src/pages/DashboardPage.tsx",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-generated-static-image-assets-to-the-frontend-and-render-them-in-the-ui-e-g-in-the-app-header-landing-area-from-frontend-public-assets-generated",
+      "featureTitle": "Add generated static image assets to the frontend and render them in the UI (e.g., in the app header/landing area) from frontend/public/assets/generated.",
+      "files": [
+        "frontend/index.html",
+        "frontend/src/components/auth/AccessDeniedScreen.tsx",
+        "frontend/src/components/layout/AppHeader.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

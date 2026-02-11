@@ -1,0 +1,22 @@
+{
+  "frontend/src/index.css": "Global styles with warm amber/orange primary palette and green accent colors using OKLCH color system for both light and dark modes, avoiding blue/purple tones.",
+  "frontend/tailwind.config.js": "Tailwind configuration extending the theme with custom color tokens, border radius, and animations while maintaining the OKLCH color system.",
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup, authentication gating, profile setup dialog, and theme provider wrapping the entire app.",
+  "frontend/src/hooks/useCurrentUserProfile.ts": "React Query hook for fetching the current user's profile with proper loading state management to prevent profile setup modal flash.",
+  "frontend/src/hooks/useDayLogs.ts": "React Query hooks for fetching all day logs and saving day log mutations with optimistic updates and toast notifications.",
+  "frontend/src/hooks/useInsights.ts": "React Query hook for fetching completion statistics from the backend to power the insights panel.",
+  "frontend/src/utils/dates.ts": "Date utility functions for generating day keys, formatting timestamps, and checking if a date is today.",
+  "frontend/src/utils/copyUnfinished.ts": "Logic for merging unfinished items from a previous day into today's log with deterministic deduplication to prevent duplicates.",
+  "frontend/src/components/auth/LoginButton.tsx": "Login/logout button component using Internet Identity with proper error handling and query cache clearing on logout.",
+  "frontend/src/components/auth/ProfileSetupDialog.tsx": "Modal dialog for first-time profile setup that prompts authenticated users without a profile to enter their name.",
+  "frontend/src/components/auth/AccessDeniedScreen.tsx": "Landing screen for unauthenticated users featuring the student mascot image and login call-to-action.",
+  "frontend/src/components/layout/AppHeader.tsx": "Sticky header with app logo, navigation links to Dashboard and History, user greeting, and login button.",
+  "frontend/src/pages/DashboardPage.tsx": "Main dashboard page displaying today's study and exercise sections alongside the insights panel with loading and error states.",
+  "frontend/src/pages/HistoryPage.tsx": "History view with a list of past day logs, detailed view of selected day, and copy unfinished items functionality.",
+  "frontend/src/components/daylog/StudySection.tsx": "Study items section with add/edit/delete controls, completion checkboxes, and inline editing forms.",
+  "frontend/src/components/daylog/ExerciseSection.tsx": "Exercise items section with add/edit/delete controls, completion checkboxes, and inline editing forms.",
+  "frontend/src/components/daylog/StudyItemEditor.tsx": "Inline form component for adding or editing study items with title and notes fields.",
+  "frontend/src/components/daylog/ExerciseItemEditor.tsx": "Inline form component for adding or editing exercise items with description and reps fields.",
+  "frontend/src/components/insights/InsightsPanel.tsx": "Sticky insights panel showing current streak, weekly study completion percentage, and weekly exercise completion percentage with progress bars.",
+  "frontend/index.html": "HTML entry point with favicon link and updated page title for the Student Daily Tracker application."
+}
